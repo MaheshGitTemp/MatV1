@@ -37,8 +37,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import '../../../assets/css/pages/edit-profile.css';
+import { API_BASE_URL } from '../../../utils/apiBase';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const theme = createTheme({
   components: {
     MuiOutlinedInput: {

@@ -14,9 +14,10 @@
 // so no string surgery on the base is needed.
 
 import axios from 'axios';
+import { API_BASE_URL } from '../../utils/apiBase';
 
 const adminApi = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: API_BASE_URL,
   withCredentials: true, // sends/receives the HttpOnly adminToken cookie
 });
 
