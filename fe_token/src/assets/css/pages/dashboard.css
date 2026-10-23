@@ -463,6 +463,7 @@
   font-size: 13px;
   font-weight: 600;
   line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
@@ -652,13 +653,28 @@
     white-space: normal;
   }
 
+  .dsh .dsh-table td.dsh-col-action {
+    min-width: 0;
+  }
+
   .dsh .dsh-table .dsh-actions {
     flex-wrap: nowrap;
     width: 100%;
+    min-width: 0;
+    gap: 6px;
   }
 
   .dsh .dsh-table .dsh-act {
     flex: 1 1 0;
+    min-width: 0;
+    gap: 4px;
+    padding: 8px 6px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .dsh .dsh-table .dsh-link {
+    white-space: nowrap;
   }
 }
 

@@ -269,6 +269,48 @@
 }
 
 /* ── Tablet and up ─────────────────────────────────────────────────────────── */
+/* ── Advanced search filters + results (below the MAT ID card) ─────────────── */
+.adv-card--filters {
+  max-width: 960px;
+}
+
+.adv-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  margin: 0;
+}
+
+.adv-filters .lst-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  min-width: 0;
+}
+
+.adv-filters .lst-field--submit {
+  margin-top: 4px;
+}
+
+.adv-results {
+  max-width: 960px;
+  margin: 0 auto 48px;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .adv-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+  }
+
+  .adv-filters .lst-field--submit,
+  .adv-filters .lst-field--span {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (min-width: 576px) {
   .adv-row {
     grid-template-columns: minmax(0, 1fr) auto;

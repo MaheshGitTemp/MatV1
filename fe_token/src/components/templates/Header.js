@@ -552,19 +552,21 @@ const Header = () => {
                       </ul>
                     </li>
 
-                    {/* ── Language ── */}
-                    <li className="hdr-lang-wrap">
-                      <a href="#" onClick={e => e.preventDefault()}
-                        aria-label="Language"
-                        className="hdr-icon">
-                        <i className="fas fa-globe"></i>
-                      </a>
-                      <ul className="hdr-menu hdr-menu--lang">
-                        <li className="hdr-menu__item"><a href="#" onClick={e => e.preventDefault()}>English</a></li>
-                        <li className="hdr-menu__item"><a href="#" onClick={e => e.preventDefault()}>Urdu</a></li>
-                        <li className="hdr-menu__item"><a href="#" onClick={e => e.preventDefault()}>Arabic</a></li>
-                      </ul>
-                    </li>
+                    {/* ── Language (desktop only; hidden on mobile) ── */}
+                    {!isMobile && (
+                      <li className="hdr-lang-wrap">
+                        <a href="#" onClick={e => e.preventDefault()}
+                          aria-label="Language"
+                          className="hdr-icon">
+                          <i className="fas fa-globe"></i>
+                        </a>
+                        <ul className="hdr-menu hdr-menu--lang">
+                          <li className="hdr-menu__item"><a href="#" onClick={e => e.preventDefault()}>English</a></li>
+                          <li className="hdr-menu__item"><a href="#" onClick={e => e.preventDefault()}>Urdu</a></li>
+                          <li className="hdr-menu__item"><a href="#" onClick={e => e.preventDefault()}>Arabic</a></li>
+                        </ul>
+                      </li>
+                    )}
 
                   </ul>
                 )}

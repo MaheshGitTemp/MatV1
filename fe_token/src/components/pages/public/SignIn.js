@@ -65,42 +65,6 @@ const loginHandler = async (e) => {
 };
   return (
     <>
-    <div className="pageSearch" >
-      <div className="container" >
-        <div className="searchform" >
-          <div className="row" >
-            <div className="col-lg-3 col-md-6">
-              <select name="" id="" className="form-control">
-                <option value="">Looking For</option>
-                <option value="">Bride (Female)</option>
-                <option value="">Groom (Male)</option>
-              </select>
-            </div>
-
-            <div className="col-lg-2 col-md-3">
-              <input type="number" className="form-control" placeholder="Age From"/>
-            </div>
-            <div className="col-lg-2 col-md-3">
-              <input type="number" className="form-control" placeholder="Age To"/>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <select name="" className="form-control">
-                <option value="">Choose one</option>
-                <option value="1">Never Married</option>
-                <option value="2">Married</option>
-                <option value="3">Divorced </option>
-                <option value="4">Separated </option>
-                <option value="5">Widowed</option>
-              </select>
-            </div>
-            <div className="col-lg-2 col-md-6">
-              <button type="submit" className="btn"><i className="fas fa-search"></i> Search</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
      {/* Inner Content Start-->  */}
     <div className="inner-content loginbg" style={{backgroundImage:`URL(${backImg.loginbg1})`, backgroundPosition: "center center",
     backgroundRepeat: "no-repeat",

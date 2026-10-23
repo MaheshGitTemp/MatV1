@@ -382,7 +382,7 @@ const Dashboard = () => {
                                 <th>Name</th>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th className="dsh-col-action">Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -399,8 +399,8 @@ const Dashboard = () => {
                                       />
                                     </Link>
                                   </td>
-                                  {/* MAT ID */}
-                                  <td data-label="MAT ID">
+                                  {/* ID */}
+                                  <td>
                                     <span className="dsh-mat">
                                       MAT{n.sender_id}
                                     </span>
@@ -420,8 +420,8 @@ const Dashboard = () => {
                                   </td>
                                   {/* Status */}
                                   <td data-label="Status">{statusBadge(n.status)}</td>
-                                  {/* Action */}
-                                  <td data-label="Action">
+                                  {/* Actions */}
+                                  <td className="dsh-col-action">
                                     {n.status === 'pending' ? (
                                       <div className="dsh-actions">
                                         <button
@@ -482,7 +482,7 @@ const Dashboard = () => {
                                 <th>Age</th>
                                 <th>Date</th>
                                 <th>Response</th>
-                                <th>Action</th>
+                                <th className="dsh-col-action">Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -499,8 +499,8 @@ const Dashboard = () => {
                                       />
                                     </Link>
                                   </td>
-                                  {/* MAT ID */}
-                                  <td data-label="MAT ID">
+                                  {/* ID */}
+                                  <td>
                                     <span className="dsh-mat">
                                       MAT{n.receiver_id}
                                     </span>
@@ -530,8 +530,8 @@ const Dashboard = () => {
                                       <span className="dsh-badge is-pending">⏳ Awaiting</span>
                                     )}
                                   </td>
-                                  {/* Action */}
-                                  <td data-label="Action">
+                                  {/* Actions */}
+                                  <td className="dsh-col-action">
                                     <Link
                                       to={`/profiledetails/${n.receiver_id}`}
                                       className="dsh-link"

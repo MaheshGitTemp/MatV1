@@ -28,12 +28,14 @@ const userId = Number(localStorage.getItem('userId'));
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [newMessage,      setNewMessage]      = useState('');
   const [sending,         setSending]         = useState(false);
+  const [flashMsg,        setFlashMsg]        = useState('');
 
   // ─── Refs ─────────────────────────────────────────────────────────────────
   const inputRef             = useRef(null);
   const pollingRef           = useRef(null);
   const activeConvRef        = useRef(null);
   const messagesContainerRef = useRef(null);
+  const flashTimerRef        = useRef(null);
 
   const navigate = useNavigate();
 
@@ -112,9 +114,30 @@ const userId = Number(localStorage.getItem('userId'));
     setTimeout(() => inputRef.current?.focus(), 150);
   };
 
+  // Close the open chat (mobile back button) and return to the inbox list
+  const closeConversation = () => {
+    if (pollingRef.current) clearInterval(pollingRef.current);
+    pollingRef.current = null;
+    setActiveConv(null);
+  };
+
   // Stop polling on unmount
   useEffect(() => {
     return () => { if (pollingRef.current) clearInterval(pollingRef.current); };
+  }, []);
+
+  // ─── Call / video buttons: calls are not allowed, show a brief flash ─────
+  const showFlash = (text) => {
+    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+    setFlashMsg(text);
+    flashTimerRef.current = setTimeout(() => setFlashMsg(''), 2500);
+  };
+  const handleCallClick  = () => showFlash('Calling is not allowed');
+  const handleVideoClick = () => showFlash('Video calls are not allowed');
+
+  // Clear flash timer on unmount
+  useEffect(() => {
+    return () => { if (flashTimerRef.current) clearTimeout(flashTimerRef.current); };
   }, []);
 
   // ─── Pause polling when tab hidden ───────────────────────────────────────
@@ -334,6 +357,16 @@ const userId = Number(localStorage.getItem('userId'));
                       <>
                         {/* Chat Header */}
                         <div className="msg-chat__head">
+                          {/* Mobile-only back button (hidden on desktop via CSS) */}
+                          <button
+                            type="button"
+                            className="msg-back"
+                            onClick={closeConversation}
+                            aria-label="Back to conversations"
+                            title="Back to conversations"
+                          >
+                            <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                          </button>
                           {/* ✅ Header — medium (600×800) — larger display */}
                           <img
                             className="msg-chat__avatar"
@@ -350,10 +383,28 @@ const userId = Number(localStorage.getItem('userId'));
                               {activeConv.other_fname} {activeConv.other_lname}
                             </p>
                           </div>
-                          <div className="msg-chat__tools" aria-hidden="true">
-                            <i className="fa fa-phone"></i>
-                            <i className="fa fa-video-camera"></i>
-                            <i className="fa fa-ellipsis-v"></i>
+                          <div className="msg-chat__tools">
+                            <button
+                              type="button"
+                              className="msg-chat__tool"
+                              onClick={handleCallClick}
+                              aria-label="Voice call"
+                              title="Voice call"
+                            >
+                              <i className="fa fa-phone" aria-hidden="true"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="msg-chat__tool"
+                              onClick={handleVideoClick}
+                              aria-label="Video call"
+                              title="Video call"
+                            >
+                              <i className="fa fa-video-camera" aria-hidden="true"></i>
+                            </button>
+                            <span className="msg-chat__tool msg-chat__tool--static" aria-hidden="true">
+                              <i className="fa fa-ellipsis-v"></i>
+                            </span>
                           </div>
                         </div>
 
@@ -464,6 +515,13 @@ const userId = Number(localStorage.getItem('userId'));
                     )}
                   </div>
                   {/* ── End Right Panel ── */}
+
+                  {/* ── Flash message (call / video not allowed) ── */}
+                  {flashMsg && (
+                    <div className="msg-flash" role="status" aria-live="polite">
+                      {flashMsg}
+                    </div>
+                  )}
 
                 </div>
               </div>

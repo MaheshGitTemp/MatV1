@@ -289,14 +289,88 @@
   color: var(--muted);
 }
 
-.msg-frame .msg-chat__tools i {
+.msg-frame .msg-chat__tool {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
+  padding: 0;
+  border: 0;
   border-radius: 10px;
+  background: transparent;
+  color: inherit;
   font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.msg-frame .msg-chat__tool:hover {
+  background: var(--brand-50);
+  color: var(--brand);
+}
+
+.msg-frame .msg-chat__tool:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.msg-frame .msg-chat__tool--static {
+  cursor: default;
+}
+
+.msg-frame .msg-chat__tool--static:hover {
+  background: transparent;
+  color: inherit;
+}
+
+/* Back button: only shown in the mobile full-screen chat view */
+.msg-frame .msg-back {
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0 -6px 0 -8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--brand-700);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.msg-frame .msg-back:hover {
+  background: var(--brand-50);
+}
+
+.msg-frame .msg-back:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+/* Flash message (e.g. "Calling is not allowed"); auto-hidden by Messages.js */
+.msg-frame .msg-flash {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  z-index: 5;
+  max-width: calc(100% - 32px);
+  padding: 10px 18px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(28, 31, 42, 0.92);
+  box-shadow: var(--shadow);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  pointer-events: none;
+  animation: msgIn 0.22s ease-out both;
 }
 
 /* ── Thread ────────────────────────────────────────────────────────────────── */
@@ -564,16 +638,6 @@
   }
 }
 
-/* ── Mobile (default): stacked; open chat shrinks the inbox ────────────────── */
-.msg-frame.is-chat-open .msg-list-panel {
-  flex: 0 0 34%;
-  max-height: 34%;
-}
-
-.msg-frame.is-chat-open .msg-chat {
-  flex: 1 1 auto;
-}
-
 /* ── Tablet and up: two columns, inbox | chat ──────────────────────────────── */
 @media (min-width: 768px) {
   .msg-frame {
@@ -623,6 +687,8 @@
   }
 }
 
+/* ── Mobile (< 768px): inbox list first; selected chat opens full screen ───── */
+/* is-chat-open is derived from activeConv in Messages.js (no extra state). */
 @media (max-width: 767px) {
   .msg-frame .msg-del {
     opacity: 1;
@@ -630,6 +696,79 @@
 
   .msg-frame .msg-contact__wrap {
     min-height: 62px;
+  }
+
+  /* Only the inbox is visible until a conversation is opened */
+  .msg-frame .msg-chat {
+    display: none;
+  }
+
+  /* Open chat: fixed full-screen layer covering the page */
+  .msg-frame.is-chat-open {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1300; /* above the mobile bottom nav (1200) so the composer is not covered */
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .msg-frame.is-chat-open .msg-list-panel {
+    display: none;
+  }
+
+  .msg-frame.is-chat-open .msg-chat {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .msg-frame .msg-back {
+    display: inline-flex;
+  }
+
+  .msg-frame .msg-chat__head {
+    gap: 8px;
+    min-height: 60px;
+    padding: 8px 10px;
+  }
+
+  .msg-frame .msg-chat__avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .msg-frame .msg-chat__tool {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+
+  .msg-frame .msg-composer {
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Narrow phones (e.g. 360px): keep the header from overflowing */
+@media (max-width: 380px) {
+  .msg-frame .msg-chat__head {
+    gap: 6px;
+    padding: 8px 6px 8px 4px;
+  }
+
+  .msg-frame .msg-chat__tools {
+    gap: 0;
+  }
+
+  .msg-frame .msg-chat__name {
+    font-size: 15px;
   }
 }
 

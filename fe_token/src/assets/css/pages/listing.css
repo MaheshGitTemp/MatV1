@@ -349,6 +349,22 @@
   color: var(--brand);
 }
 
+/* Clickable MAT ID / name (opens ProfileDetails, same as Details button) */
+.lst-card__name a.lst-card__link {
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.lst-card__name a.lst-card__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lst-card__name a.lst-card__link:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
 .lst-facts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -391,7 +407,7 @@
 .lst-card__actions {
   grid-area: actions;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
 }
 
