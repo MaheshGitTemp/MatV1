@@ -1,0 +1,309 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Edit Profile page — scoped under .ep- prefix (EditProfile.js).
+   Mobile-first: single column, sticky save bar above the bottom nav.
+   Desktop (>=768px): two-column field grid, roomier section cards.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ep-main {
+  min-width: 0;
+  margin-bottom: 40px;
+}
+
+.ep-form {
+  margin: 0;
+}
+
+.ep-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 16px 0 24px;
+}
+
+/* ── Section cards ─────────────────────────────────────────────────────────── */
+.ep-card {
+  padding: 22px 16px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.ep-card:hover {
+  box-shadow: var(--shadow);
+  border-color: #ddd8df;
+}
+
+.ep-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1eff2;
+}
+
+.ep-card__head > i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--brand-50);
+  color: var(--brand);
+  font-size: 16px;
+}
+
+.ep-card__head h3 {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ep-card__head p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Profile card: avatar on top, title below (mobile) */
+.ep-card__head--profile {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 0;
+}
+
+.ep-card__head--profile h3 {
+  flex: 0 0 auto;
+  font-size: 20px;
+}
+
+/* ── Avatar ────────────────────────────────────────────────────────────────── */
+.ep-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.ep-avatar__frame {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--brand-50);
+  box-shadow: 0 0 0 4px #fff, var(--shadow);
+}
+
+.ep-avatar__frame .ep-avatar__placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  color: #d9c3c3;
+}
+
+.ep-avatar__frame .ep-avatar__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: top;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.ep-avatar__frame:hover .ep-avatar__img {
+  transform: scale(1.04);
+}
+
+.ep-avatar__action {
+  margin: 0;
+}
+
+.ep-avatar__action .ep-avatar__btn {
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+/* ── Field grid ────────────────────────────────────────────────────────────── */
+.ep-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 20px;
+}
+
+.ep-field {
+  min-width: 0;
+}
+
+.ep-field--full {
+  grid-column: 1 / -1;
+}
+
+.ep-field .MuiAutocomplete-root {
+  width: 100%;
+}
+
+.ep-field .error {
+  display: block;
+  margin: -6px 2px 10px;
+  font-size: 12px;
+  color: var(--danger);
+}
+
+/* Salary: amount + unit side by side */
+.ep-salary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.ep-field--salary .ep-salary__msg {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+/* ── MUI overrides (scoped to this form) ───────────────────────────────────── */
+.ep-form .MuiOutlinedInput-root {
+  border-radius: 12px;
+  background: #fff;
+  transition: box-shadow 0.2s ease;
+}
+
+.ep-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #c4bfc7;
+}
+
+.ep-form .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: var(--ring);
+}
+
+.ep-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--brand);
+}
+
+.ep-form .MuiInputLabel-root {
+  color: var(--muted);
+}
+
+.ep-form .MuiOutlinedInput-input[readonly] {
+  background-color: var(--canvas);
+  border-radius: 12px;
+}
+
+/* ── Save bar ──────────────────────────────────────────────────────────────── */
+.ep-savebar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.ep-savebar .ep-savebar__btn {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+/* Mobile: stick above the bottom nav (64px) so it is always reachable */
+@media (max-width: 767px) {
+  .ep-savebar {
+    position: sticky;
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    z-index: 20;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* ── Tablet & desktop ──────────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+  .ep-body {
+    gap: 24px;
+  }
+
+  .ep-card {
+    padding: 28px 28px 18px;
+  }
+
+  .ep-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+
+  .ep-card__head--profile {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 24px;
+  }
+
+  .ep-card__head--profile h3 {
+    font-size: 22px;
+  }
+
+  .ep-avatar__frame {
+    width: 132px;
+    height: 132px;
+  }
+
+  .ep-savebar {
+    justify-content: flex-end;
+    position: static;
+    padding: 8px 0 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .ep-savebar .ep-savebar__btn {
+    width: auto;
+    min-width: 220px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .ep-card {
+    padding: 30px 32px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ep-card,
+  .ep-avatar__frame .ep-avatar__img {
+    transition: none;
+  }
+
+  .ep-avatar__frame:hover .ep-avatar__img {
+    transform: none;
+  }
+}

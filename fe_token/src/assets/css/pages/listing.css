@@ -1,0 +1,635 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Profiles List page (Listing.js) — every selector prefixed with .lst-
+   Mobile-first. Desktop (>= 992px) switches to sidebar + results layout.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Quick search bar (top strip) ──────────────────────────────────────────── */
+.lst-quick-bar {
+  padding: 16px 0;
+}
+
+.lst-quick {
+  width: 100%;
+}
+
+.lst-quick-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.lst-quick-grid .lst-field {
+  flex: 1 1 calc(50% - 5px);
+  min-width: 0;
+}
+
+.lst-quick-grid .lst-field--wide {
+  flex-basis: 100%;
+}
+
+.lst-quick-grid .form-control {
+  height: 44px;
+  margin: 0;
+}
+
+.lst-quick-action {
+  flex: 0 0 100%;
+}
+
+.lst-quick-action .btn {
+  width: 100%;
+  min-height: 46px;
+  margin: 0;
+  padding: 10px 20px;
+}
+
+/* ── Mobile advanced-search toggle ─────────────────────────────────────────── */
+.lst-adv-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 0;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -10px rgba(168, 64, 64, 0.7);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.lst-adv-toggle:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.lst-adv-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.lst-adv-toggle > span i {
+  margin-right: 8px;
+}
+
+.lst-adv-toggle.is-open {
+  margin-bottom: 14px;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────────────────────── */
+.lst-sidebar {
+  min-width: 0;
+}
+
+.lst-title h1 {
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.lst-title h1 span {
+  color: var(--brand);
+}
+
+.lst-sidebar-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.lst-filters {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.lst-filters .lst-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  min-width: 0;
+}
+
+.lst-filters .form-control {
+  margin: 0;
+}
+
+.lst-label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.lst-filters .lst-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 4px 2px;
+}
+
+.lst-check input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--brand);
+  cursor: pointer;
+}
+
+.lst-check label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.lst-salary-msg {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand-700);
+  background: var(--brand-50);
+  border-radius: var(--radius-sm);
+}
+
+.lst-filters .lst-field--submit {
+  margin-top: 4px;
+}
+
+.lst-filters .sub {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+}
+
+/* ── Results column ────────────────────────────────────────────────────────── */
+.lst-results {
+  min-width: 0;
+}
+
+.lst-active {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  background: var(--brand-50);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius);
+}
+
+.lst-clear-btn {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--brand-700);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lst-clear-btn:hover {
+  background: #fff;
+  border-color: var(--brand);
+}
+
+.lst-clear-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.lst-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.lst-view-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.lst-view-toggle a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 16px;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lst-view-toggle a:hover {
+  background: var(--brand-50);
+  color: var(--brand);
+}
+
+.lst-view-toggle a.is-active {
+  background: var(--brand);
+  color: #fff;
+}
+
+.lst-view-toggle a:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.lst-count {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ── Profile cards ─────────────────────────────────────────────────────────── */
+.lst-grid {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lst-card {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  grid-template-areas:
+    'photo body'
+    'actions actions';
+  gap: 14px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.lst-card:hover {
+  border-color: var(--brand-100);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.lst-card__photo {
+  grid-area: photo;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--brand-50);
+}
+
+.lst-card__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1.3;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.4s ease;
+}
+
+.lst-card:hover .lst-card__photo img {
+  transform: scale(1.03);
+}
+
+.lst-card__body {
+  grid-area: body;
+  min-width: 0;
+}
+
+.lst-card__name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.lst-card__name a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.lst-card__name a:hover {
+  color: var(--brand);
+}
+
+.lst-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 14px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.lst-facts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.lst-facts li > i {
+  flex-shrink: 0;
+  width: 14px;
+  margin-top: 3px;
+  text-align: center;
+  color: var(--brand);
+  font-size: 12px;
+}
+
+.lst-card__about {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.lst-card__actions {
+  grid-area: actions;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Shared button look for card actions */
+.lst-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.lst-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.lst-btn:active {
+  transform: scale(0.98);
+}
+
+.lst-btn--ghost:hover {
+  color: var(--brand);
+  background: var(--brand-50);
+  border-color: var(--brand-100);
+}
+
+.lst-btn--primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  color: #fff;
+  box-shadow: 0 8px 18px -10px rgba(168, 64, 64, 0.8);
+}
+
+.lst-btn--primary:hover {
+  color: #fff;
+  filter: brightness(1.06);
+  box-shadow: 0 10px 22px -10px rgba(168, 64, 64, 0.8);
+}
+
+.lst-card .lst-btn i {
+  font-size: 13px;
+}
+
+/* Empty state */
+.lst-empty-item {
+  list-style: none;
+}
+
+.lst-empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed #d8d4da;
+  border-radius: var(--radius);
+}
+
+.lst-empty > i {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 36px;
+  color: var(--subtle);
+}
+
+.lst-empty p {
+  margin: 0;
+  font-size: 15px;
+}
+
+/* ── Pagination ────────────────────────────────────────────────────────────── */
+.lst-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 28px 0 8px;
+}
+
+.lst-pager__btn,
+.lst-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lst-pager__btn:hover,
+.lst-page-btn:hover {
+  background: var(--brand-50);
+  border-color: var(--brand-100);
+  color: var(--brand);
+}
+
+.lst-pager__btn:focus-visible,
+.lst-page-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.lst-page-btn.is-active {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 18px -10px rgba(168, 64, 64, 0.8);
+}
+
+.lst-page-btn--label {
+  padding: 0 16px;
+}
+
+.lst-pager__btn.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.lst-page-dots {
+  padding: 0 4px;
+  color: var(--subtle);
+  font-weight: 600;
+}
+
+/* ── Tablet and up ─────────────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+  .lst-quick-grid .lst-field {
+    flex: 1 1 calc(25% - 8px);
+  }
+
+  .lst-quick-grid .lst-field--wide {
+    flex-basis: calc(50% - 5px);
+  }
+
+  .lst-quick-action {
+    flex: 0 0 auto;
+  }
+
+  .lst-quick-action .btn {
+    width: auto;
+    min-width: 140px;
+  }
+
+  .lst-card {
+    grid-template-columns: 150px minmax(0, 1fr) 170px;
+    grid-template-areas: 'photo body actions';
+    align-items: start;
+    gap: 20px;
+    padding: 18px;
+  }
+
+  .lst-card__actions {
+    grid-template-columns: 1fr;
+    align-self: center;
+  }
+
+  .lst-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ── Desktop: sidebar + results ────────────────────────────────────────────── */
+@media (min-width: 992px) {
+  .lst-layout {
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .lst-sidebar {
+    position: sticky;
+    top: 96px;
+  }
+
+  .lst-quick-grid .lst-field {
+    flex: 1 1 0;
+  }
+
+  .lst-quick-grid .lst-field--wide {
+    flex: 1.3 1 0;
+  }
+
+  .lst-card {
+    grid-template-columns: 170px minmax(0, 1fr) 180px;
+  }
+}
+
+/* Mobile-only layout tweaks (below 992px the sidebar stacks above results) */
+@media (max-width: 991px) {
+  .lst-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+
+/* ── Motion ────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .lst-adv-toggle,
+  .lst-card,
+  .lst-card__photo img,
+  .lst-btn,
+  .lst-pager__btn,
+  .lst-page-btn,
+  .lst-view-toggle a,
+  .lst-clear-btn {
+    transition: none;
+  }
+
+  .lst-card:hover,
+  .lst-card:hover .lst-card__photo img,
+  .lst-adv-toggle:hover,
+  .lst-btn:active {
+    transform: none;
+  }
+}

@@ -1,0 +1,173 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Toast notifications (src/components/hooks/ToastContext.js)
+   Scoped with .tst- / .tst__ / .tst--. Colour variants are set per type.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Stack container: bottom-right on desktop ─────────────────────────────── */
+.tst-stack {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(380px, calc(100vw - 48px));
+  pointer-events: none; /* only the cards themselves catch clicks */
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+.tst {
+  --tst-accent: var(--brand);
+  --tst-tint: var(--brand-50);
+
+  position: relative;
+  overflow: hidden;
+  pointer-events: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  animation: tstInSide 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.tst--success {
+  --tst-accent: var(--success);
+  --tst-tint: #e8f6ee;
+}
+
+.tst--error {
+  --tst-accent: var(--danger);
+  --tst-tint: #fdeeec;
+}
+
+.tst--warning {
+  --tst-accent: #b45309;
+  --tst-tint: #fdf3e1;
+}
+
+.tst--info {
+  --tst-accent: #1d4ed8;
+  --tst-tint: #e9f0fd;
+}
+
+.tst__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 8px 16px 14px;
+}
+
+.tst__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--tst-tint);
+  color: var(--tst-accent);
+  font-size: 16px;
+}
+
+.tst__text {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.tst__title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+.tst__desc {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+  word-wrap: break-word;
+}
+
+/* 44px touch target; the visible glyph stays small */
+.tst__close {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: -10px -6px -10px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--subtle);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tst__close:hover,
+.tst__close:focus-visible {
+  background: var(--canvas);
+  color: var(--ink);
+  outline: none;
+}
+
+/* Auto-dismiss progress bar: shrinks left to right over the toast's lifetime */
+.tst__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--tst-accent);
+  transform-origin: left center;
+  animation-name: tstBar;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-duration: 3500ms;
+  opacity: 0.85;
+}
+
+@keyframes tstInSide {
+  from { opacity: 0; transform: translateX(110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes tstInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tstBar {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* ── Phones: full width, above the bottom nav (64px) ──────────────────────── */
+@media (max-width: 639px) {
+  .tst-stack {
+    left: 12px;
+    right: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    width: auto;
+  }
+
+  .tst {
+    animation-name: tstInUp;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tst,
+  .tst__bar {
+    animation: none;
+  }
+}

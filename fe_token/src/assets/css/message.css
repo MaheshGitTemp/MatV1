@@ -1,0 +1,511 @@
+@charset "utf-8";
+/* CSS Document */
+ 
+/* ── Main Frame ───────────────────────────────────────────────────────── */
+#frame {
+  width: 100%;
+  min-width: 360px;
+  max-width: 1000px;
+  height: 92vh;
+  min-height: 300px;
+  max-height: 720px;
+  background: #E6EAEA;
+  display: flex;
+  margin-top: 20px;   /* space between the chat frame and the sidebar/My Account menu above it */
+}
+
+@media screen and (max-width: 360px) {
+  #frame {
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+/* ── Side Panel (Left) ────────────────────────────────────────────────── */
+#frame #sidepanel {
+  width: 40%;
+  height: 100%;
+  background: #eee;
+  color: #f5f5f5;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 735px) {
+  #frame #sidepanel {
+    width: 58px;
+    min-width: 58px;
+  }
+}
+
+/* Search */
+#frame #sidepanel #search {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 735px) {
+  #frame #sidepanel #search { display: none; }
+}
+
+#frame #sidepanel #search label {
+  position: absolute;
+  margin: 10px 0 0 20px;
+  color: #999;
+}
+
+#frame #sidepanel #search input {
+  padding: 10px 0 10px 46px;
+  width: calc(100% - 20px);
+  border: none;
+  background: #f0f0f0;
+  color: #555;
+  margin: 0 10px;
+  border-radius: 20px;
+}
+
+#frame #sidepanel #search input:focus {
+  outline: none;
+  background: #e0e0e0;
+}
+
+/* Contacts List */
+#frame #sidepanel #contacts {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#frame #sidepanel #contacts::-webkit-scrollbar {
+  width: 6px;
+  background: #999;
+}
+
+#frame #sidepanel #contacts::-webkit-scrollbar-thumb {
+  background-color: #999;
+}
+
+#frame #sidepanel #contacts ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#frame #sidepanel #contacts ul li.contact {
+  position: relative;
+  padding: 10px 0 15px 0;
+  font-size: 0.9em;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+@media screen and (max-width: 735px) {
+  #frame #sidepanel #contacts ul li.contact {
+    padding: 6px 0 46px 8px;
+  }
+}
+
+#frame #sidepanel #contacts ul li.contact:hover {
+  background: #fff;
+}
+
+#frame #sidepanel #contacts ul li.contact.active {
+  background: #a84040;
+  border-right: 5px solid #6722cd;
+}
+
+#frame #sidepanel #contacts ul li.contact.active p {
+  color: #fff;
+  margin: 0;
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  padding-left: 25px;
+}
+
+@media screen and (max-width: 735px) {
+  #frame #sidepanel #contacts ul li.contact .wrap {
+    width: 100%;
+  }
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap span.contact-status {
+  position: absolute;
+  left: 0;
+  margin: -2px 0 0 -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #2c3e50;
+  background: #95a5a6;
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap span.online {
+  background: #2ecc71;
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 735px) {
+  #frame #sidepanel #contacts ul li.contact .wrap img {
+    margin-right: 0px;
+  }
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap .meta {
+  flex: 1;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 735px) {
+  #frame #sidepanel #contacts ul li.contact .wrap .meta {
+    display: none;
+  }
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap .meta .name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 0 4px 0;
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap .meta .preview {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  color: #999;
+}
+
+#frame #sidepanel #contacts ul li.contact .wrap .meta .preview span {
+  opacity: .5;
+}
+
+/* Unread badge */
+#frame #sidepanel #contacts ul li.contact .wrap .unread-count {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: #a84040;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 9px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#frame #sidepanel #contacts ul li.contact.active .unread-count {
+  background: #fff !important;
+  color: #a84040 !important;
+}
+
+/* ── Content Area (Right Panel) ───────────────────────────────────────── */
+#frame .content {
+  width: 60%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+@media screen and (max-width: 735px) {
+  #frame .content {
+    width: calc(100% - 58px);
+    min-width: 300px !important;
+  }
+}
+
+/* Chat Header */
+#frame .content .contact-profile {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  height: 60px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+#frame .content .contact-profile img {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;   /* prevent the flex row from squeezing it into an oval */
+  flex-shrink: 0;    /* never shrink the avatar width */
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+#frame .content .contact-profile p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+#frame .content .contact-profile .social-media {
+  margin-left: auto;
+}
+
+#frame .content .contact-profile .social-media i {
+  margin-left: 14px;
+  cursor: pointer;
+  color: #999;
+}
+
+#frame .content .contact-profile .social-media i:hover {
+  color: #435f7a;
+}
+
+/* Messages Area */
+#frame .content .messages {
+    flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth; /* Optional: makes manual scrolling smooth */
+  padding: 20px;
+  background: #f0f2f5;
+  /* Ensure it doesn't push parents */
+  contain: layout style; 
+}
+
+#frame .content .messages::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+#frame .content .messages::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+#frame .content .messages ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#frame .content .messages ul li {
+  margin: 10px 0;
+  display: flex;
+  align-items: flex-end;
+  max-width: 80%;
+}
+
+#frame .content .messages ul li.sent {
+  justify-content: flex-start;
+}
+
+#frame .content .messages ul li.replies {
+  justify-content: flex-end;
+}
+
+#frame .content .messages ul li img {
+  min-width: 32px;   /* keep bubble avatars circular in the flex row */
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 8px;
+}
+
+#frame .content .messages ul li.sent img {
+  order: 1;
+}
+
+#frame .content .messages ul li.replies img {
+  order: 2;
+}
+
+#frame .content .messages ul li p {
+  padding: 10px 15px;
+  border-radius: 18px;
+  max-width: 300px;
+  word-wrap: break-word;
+  margin: 0;
+  position: relative;
+}
+
+#frame .content .messages ul li.sent p {
+  background: #a84040;
+  color: #fff;
+  order: 2;
+  border-bottom-left-radius: 4px;
+}
+
+#frame .content .messages ul li.replies p {
+  background: #fff;
+  color: #333;
+  order: 1;
+  border-bottom-right-radius: 4px;
+}
+
+#frame .content .messages ul li p img {
+  max-width: 200px;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+#frame .content .messages ul li p span {
+  font-size: 10px;
+  opacity: 0.7;
+  /* display: block; */
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* Date separator */
+#frame .content .messages ul li.date-separator {
+  justify-content: center;
+  max-width: 100%;
+  margin: 15px 0;
+}
+
+#frame .content .messages ul li.date-separator span {
+  background: #e0e0e0;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #666;
+}
+
+/* Delete button */
+#frame .content .messages ul li .delete-hover {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+#frame .content .messages ul li.sent:hover .delete-hover,
+#frame .content .messages ul li.replies:hover .delete-hover {
+  opacity: 0.7;
+}
+
+#frame .content .messages ul li .delete-hover:hover {
+  opacity: 1 !important;
+  background: rgba(0,0,0,0.2) !important;
+}
+
+/* Message Input */
+#frame .content .message-input {
+  flex-shrink: 0;
+  padding: 15px 20px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+
+#frame .content .message-input .wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#frame .content .message-input .wrap input {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  border-radius: 25px;
+  font-size: 14px;
+  background: #f5f5f5;
+}
+
+#frame .content .message-input .wrap input:focus {
+  outline: none;
+  background: #fff;
+  border-color: #a84040;
+}
+
+#frame .content .message-input .wrap .attachment {
+  color: #999;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+}
+
+#frame .content .message-input .wrap .attachment:hover {
+  color: #435f7a;
+}
+
+#frame .content .message-input .wrap button.submit {
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #ec639c;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+#frame .content .message-input .wrap button.submit:hover {
+  background: #333;
+}
+
+#frame .content .message-input .wrap button.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loading/Empty states */
+.loading, .empty {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 14px;
+}
+
+/* Placeholder when no conversation selected */
+.chat-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #aaa;
+  flex-direction: column;
+}
+
+.chat-placeholder i {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.chat-placeholder p {
+  font-size: 14px;
+}

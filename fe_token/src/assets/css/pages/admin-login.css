@@ -1,0 +1,88 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Admin login page — presentation only. Scoped under .adm-login.
+   Shared button / input / alert classes come from admin.css.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.adm-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background:
+    linear-gradient(135deg, rgba(28, 31, 42, 0.92) 0%, rgba(122, 34, 34, 0.8) 100%),
+    var(--canvas);
+  font-family: var(--font);
+  color: var(--ink);
+}
+
+.adm-login__card {
+  width: 100%;
+  max-width: 400px;
+  padding: 36px 32px 30px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.adm-login__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.adm-login__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 12px 24px -12px rgba(168, 64, 64, 0.8);
+}
+
+.adm-login__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.adm-login__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.adm-login__field {
+  margin-bottom: 16px;
+}
+
+.adm-login .adm-input {
+  height: 46px;
+  font-size: 15px;
+}
+
+.adm-login .adm-btn--block {
+  margin-top: 10px;
+}
+
+.adm-login .adm-btn:disabled {
+  opacity: 0.75;
+}
+
+@media (max-width: 767px) {
+  .adm-login__card {
+    padding: 28px 22px 24px;
+    border-radius: 16px;
+  }
+}

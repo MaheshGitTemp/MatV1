@@ -1,0 +1,393 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Close Account page (components/pages/private/CloseAccount.js)
+   Scoped to .cla / .cla-* so nothing leaks into other pages.
+   Destructive styling: danger stripe on the card, solid red final action.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cla {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cla-card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--danger);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+.cla .cla-head {
+  padding: 22px 22px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cla .cla-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--ink);
+}
+
+.cla .cla-title--danger {
+  color: var(--danger);
+}
+
+.cla .cla-title i {
+  font-size: 18px;
+}
+
+.cla .cla-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 22px;
+}
+
+/* ── Step 1: warning ───────────────────────────────────────────────────────── */
+.cla .cla-warning {
+  padding: 16px 18px;
+  background: #fff8e6;
+  border: 1px solid #f7d46a;
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--radius);
+}
+
+.cla .cla-warning h5 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.cla .cla-warning ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.cla .cla-warning li {
+  margin-bottom: 6px;
+}
+
+.cla .cla-warning li:last-child {
+  margin-bottom: 0;
+}
+
+.cla .cla-section__title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.cla .cla-effects {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+.cla .cla-effect {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 14px;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.cla .cla-effect__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  box-shadow: 0 6px 14px -8px rgba(16, 24, 40, 0.5);
+}
+
+.cla .cla-effect__icon i {
+  font-size: 16px;
+  color: #fff;
+}
+
+.cla .cla-effect__label {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.cla .cla-effect__desc {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────────── */
+.cla .cla-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cla-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.15s ease, border-color 0.2s ease;
+}
+
+.cla-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.cla .cla-btn--keep {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 10px 20px -12px rgba(168, 64, 64, 0.85);
+}
+
+.cla .cla-btn--keep:not(:disabled):hover {
+  background: var(--brand-600);
+  transform: translateY(-1px);
+}
+
+.cla .cla-btn--ghost {
+  background: #fff;
+  color: var(--ink-soft);
+  border-color: #d8d4da;
+}
+
+.cla .cla-btn--ghost:not(:disabled):hover {
+  background: var(--canvas);
+  border-color: #c4bfc7;
+}
+
+.cla .cla-btn--danger {
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 10px 20px -12px rgba(180, 35, 24, 0.85);
+}
+
+.cla .cla-btn--danger:not(:disabled):hover {
+  background: #912018;
+  transform: translateY(-1px);
+}
+
+.cla .cla-btn--danger:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Submitting: keep the red look while the request is in flight */
+.cla .cla-btn--danger.is-loading:disabled {
+  background: var(--danger);
+  color: #fff;
+  opacity: 0.75;
+  cursor: progress;
+}
+
+/* ── Step 2: confirmation ──────────────────────────────────────────────────── */
+.cla .cla-danger {
+  padding: 22px 18px;
+  text-align: center;
+  background: #fef2f2;
+  border: 1px solid #f9c5c0;
+  border-radius: var(--radius);
+}
+
+.cla .cla-danger__icon {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 34px;
+  color: var(--danger);
+}
+
+.cla .cla-danger h5 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--danger);
+}
+
+.cla .cla-danger p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #9b1c14;
+}
+
+.cla .cla-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cla .cla-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.cla .cla-label strong {
+  color: var(--danger);
+  letter-spacing: 0.04em;
+}
+
+.cla .cla-input {
+  height: 56px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+
+.cla .cla-input.is-wrong {
+  border: 2px solid var(--danger);
+}
+
+.cla .cla-input.is-wrong:focus {
+  box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.15);
+}
+
+.cla .cla-input.is-match {
+  border: 2px solid var(--success);
+}
+
+.cla .cla-input.is-match:focus {
+  box-shadow: 0 0 0 4px rgba(21, 128, 61, 0.15);
+}
+
+.cla .cla-feedback {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.cla .cla-feedback.is-ok {
+  color: var(--success);
+}
+
+.cla .cla-feedback.is-bad {
+  color: var(--danger);
+}
+
+.cla .cla-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #fdecea;
+  border: 1px solid #f3b8b2;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--danger);
+}
+
+.cla .cla-error i {
+  margin-top: 3px;
+}
+
+/* ── Step 3: done ──────────────────────────────────────────────────────────── */
+.cla .cla-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 22px;
+  text-align: center;
+}
+
+.cla .cla-done__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: #e7f8ee;
+  box-shadow: 0 0 0 8px #f3fbf6;
+}
+
+.cla .cla-done__icon i {
+  font-size: 40px;
+  color: var(--success);
+}
+
+.cla .cla-done h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.cla .cla-done p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ── Mobile ────────────────────────────────────────────────────────────────── */
+@media (min-width: 576px) {
+  .cla .cla-effects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .cla .cla-head,
+  .cla .cla-body {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media (max-width: 479px) {
+  .cla .cla-actions .cla-btn {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cla *,
+  .cla *::before,
+  .cla *::after {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,329 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Private-area sidebar (components/pages/private/templates/Sidebar.js)
+   Every selector is scoped to .sbr so nothing leaks into other pages.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.sbr {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  margin-bottom: 24px;
+}
+
+.sbr__card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Profile card (desktop only) ───────────────────────────────────────────── */
+.sbr__profile {
+  padding: 24px 20px 20px;
+  text-align: center;
+}
+
+.sbr .sbr__name {
+  margin: 0 0 18px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.sbr__avatar {
+  width: 144px;
+  max-width: 100%;
+  margin: 0 auto 18px;
+  padding: 4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  box-shadow: 0 14px 26px -16px rgba(122, 34, 34, 0.75);
+}
+
+.sbr__avatar-frame {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--canvas);
+}
+
+.sbr__avatar-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  cursor: pointer;
+}
+
+.sbr .sbr__mat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 14px;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.sbr__mat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #be7e80 0%, var(--brand) 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 8px 16px -10px rgba(168, 64, 64, 0.8);
+  transition: transform 0.15s ease, filter 0.2s ease, background 0.2s ease;
+}
+
+.sbr__mat-chip:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.sbr__mat-chip:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.sbr__mat-chip i {
+  font-size: 12px;
+}
+
+.sbr__mat-chip.is-copied {
+  background: var(--success);
+}
+
+.sbr .sbr__info p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.sbr__info i {
+  margin-right: 6px;
+  color: var(--brand);
+}
+
+/* ── Menu card ─────────────────────────────────────────────────────────────── */
+.sbr__menu {
+  padding: 10px;
+}
+
+.sbr__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -12px rgba(168, 64, 64, 0.9);
+  transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.sbr__toggle:hover {
+  filter: brightness(1.05);
+}
+
+.sbr__toggle:active {
+  transform: scale(0.99);
+}
+
+.sbr__toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.sbr__toggle.is-open {
+  margin-bottom: 10px;
+}
+
+.sbr__nav {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sbr__nav li {
+  margin: 0;
+  list-style: none;
+}
+
+.sbr__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sbr__link > i {
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+
+.sbr__link:hover {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+
+.sbr__link:hover > i {
+  color: var(--brand);
+}
+
+.sbr__link:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.sbr__link--danger,
+.sbr__link--danger > i {
+  color: var(--danger);
+}
+
+.sbr__link--danger:hover {
+  background: #fdf1f0;
+  color: var(--danger);
+}
+
+.sbr__link--danger:hover > i {
+  color: var(--danger);
+}
+
+.sbr__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: auto;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ── Gallery card ──────────────────────────────────────────────────────────── */
+.sbr__gallery {
+  padding: 18px;
+}
+
+.sbr .sbr__title {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sbr__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sbr__tile {
+  min-width: 0;
+}
+
+.sbr__thumb {
+  position: relative;
+  aspect-ratio: 1 / 1.2;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--canvas);
+  cursor: pointer;
+}
+
+.sbr__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.35s ease;
+}
+
+.sbr__thumb:hover img {
+  transform: scale(1.05);
+}
+
+.sbr__hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(28, 31, 42, 0.45);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sbr__thumb:hover .sbr__hover {
+  opacity: 1;
+}
+
+.sbr__plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brand);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Tablet / desktop: sidebar sits beside the content column ─────────────── */
+@media (min-width: 768px) {
+  .sbr {
+    gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sbr *,
+  .sbr *::before,
+  .sbr *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

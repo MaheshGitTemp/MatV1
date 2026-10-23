@@ -1,0 +1,668 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Signup page (src/components/pages/public/Signup.js)
+   Every selector is prefixed with .sg- (or .signup-datepicker, kept for the
+   react-datepicker wrapper class used by Signup.js) so nothing leaks out.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Page shell ───────────────────────────────────────────────────────────── */
+/* Overrides theme.css's centred loginbg layout: the form is tall, so align to top */
+.inner-content.loginbg.sg-page {
+  min-height: 100vh;
+  padding: 32px 12px 56px;
+  align-items: flex-start;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.sg-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.sg-card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: sgRise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes sgRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero header ──────────────────────────────────────────────────────────── */
+.sg-hero {
+  position: relative;
+  padding: 26px 20px 24px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+}
+
+.sg-hero::after {
+  content: '';
+  position: absolute;
+  right: -60px;
+  top: -80px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+
+.sg-hero__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 20px;
+}
+
+.sg-hero__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+
+.sg-hero__sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ── Body & sections ──────────────────────────────────────────────────────── */
+.sg-body {
+  padding: 22px 18px 28px;
+  counter-reset: sg-step;
+}
+
+.sg-section {
+  margin-bottom: 28px;
+}
+
+.sg-section__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand-700);
+}
+
+.sg-section__title::before {
+  counter-increment: sg-step;
+  content: counter(sg-step);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--brand-100);
+  color: var(--brand-700);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+/* ── Responsive grid: 1 column on phones, 2 on desktop ───────────────────── */
+.sg-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px 18px;
+}
+
+.sg-col {
+  min-width: 0;
+}
+
+/* Professional row: job spans, salary amount + unit share a row on phones */
+.sg-grid--pro {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sg-col--full {
+  grid-column: 1 / -1;
+}
+
+.sg-col--job {
+  grid-column: 1 / -1;
+}
+
+.sg-relation {
+  max-width: 360px;
+  margin-top: 14px;
+}
+
+.sg-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.sg-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--danger);
+}
+
+/* Form control in an error state (the base .form-control comes from theme.css) */
+.form-control.sg-field--error,
+.form-control.sg-field--error:hover {
+  border-color: #f0a3a3;
+  background: #fffafa;
+}
+
+.form-control.sg-field--error:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.14);
+}
+
+/* ── Profile type: radio "cards" ─────────────────────────────────────────── */
+.sg-choices {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.sg-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sg-choice:hover {
+  border-color: #d8c3c3;
+  background: var(--brand-50);
+}
+
+.sg-choice:has(input:checked) {
+  border-color: var(--brand);
+  background: var(--brand-50);
+  box-shadow: var(--ring);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+
+.sg-choice input[type='radio'] {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--brand);
+}
+
+/* ── Password field + eye toggle ──────────────────────────────────────────── */
+.sg-pw {
+  position: relative;
+}
+
+.sg-pw .form-control {
+  padding-right: 48px;
+}
+
+.sg-pw__toggle {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sg-pw__toggle:hover,
+.sg-pw__toggle:focus-visible {
+  background: var(--brand-50);
+  color: var(--brand);
+}
+
+/* ── Birth details: react-datepicker fills its grid column ────────────────── */
+/* Kept as-is from the former App.css block (Signup only). Selectors unchanged. */
+.signup-datepicker,
+.signup-datepicker .react-datepicker-wrapper,
+.signup-datepicker .react-datepicker__input-container {
+  display: block;
+  width: 100%;
+}
+
+.signup-datepicker .react-datepicker__input-container input {
+  width: 100%;
+  padding: 11px 12px;
+  font-size: 14px;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+/* ── Terms ────────────────────────────────────────────────────────────────── */
+.sg-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--canvas);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.sg-terms input[type='checkbox'] {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--brand);
+}
+
+.sg-terms a {
+  font-weight: 600;
+  color: var(--brand);
+}
+
+/* ── Submit ───────────────────────────────────────────────────────────────── */
+.sg-submit {
+  min-height: 52px;
+  margin-top: 8px;
+  gap: 10px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.btn.sg-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+  transform: none;
+  box-shadow: none;
+}
+
+.sg-salary-note {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #e8f6ee;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.sg-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: signupSpin 0.7s linear infinite;
+}
+
+@keyframes signupSpin {
+  to { transform: rotate(360deg); }
+}
+
+.sg-status {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sg-status.is-success {
+  color: var(--success);
+  background: #e8f6ee;
+}
+
+.sg-status.is-error {
+  color: var(--danger);
+  background: #fdf0ee;
+}
+
+.sg-status-wrap {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.sg-login {
+  margin: 18px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Text-style button used for "Login" and "Resend OTP" */
+.sg-linkbtn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sg-linkbtn:hover {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+
+.sg-linkbtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── OTP modal ────────────────────────────────────────────────────────────── */
+.sg-otp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(17, 18, 24, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: sgFade 0.2s ease-out both;
+}
+
+@keyframes sgFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.sg-otp {
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: sgPop 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes sgPop {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sg-otp__head {
+  padding: 22px 20px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+}
+
+.sg-otp__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sg-otp__title i {
+  margin-right: 8px;
+}
+
+.sg-otp__body {
+  padding: 24px 22px 22px;
+}
+
+.sg-otp__lead {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.sg-otp__field {
+  margin-bottom: 16px;
+}
+
+.sg-otp__mail {
+  margin: 4px 0 20px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--brand);
+  word-break: break-all;
+}
+
+.sg-otp-input {
+  display: block;
+  width: 100%;
+  height: 60px;
+  padding: 0 12px;
+  border: 2px solid var(--brand);
+  border-radius: var(--radius);
+  background: #fff;
+  font-family: var(--font);
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sg-otp-input::placeholder {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-indent: 0;
+  color: #a3a1a8;
+}
+
+.sg-otp-input:focus {
+  box-shadow: var(--ring);
+}
+
+.sg-otp-input.is-error {
+  border-color: #f44336;
+}
+
+.sg-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.sg-alert--error {
+  color: #b42318;
+  background: #fdecea;
+  border: 1px solid #f9c2bd;
+}
+
+.sg-alert--success {
+  color: #166534;
+  background: #e8f6ee;
+  border: 1px solid #b7e4c7;
+}
+
+.sg-otp__verify {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 50px;
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-700) 100%);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -10px rgba(168, 64, 64, 0.7);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.sg-otp__verify:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.sg-otp__verify:disabled {
+  background: #e6e2e8;
+  color: #9b97a2;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.sg-otp__timer {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sg-otp__timer strong {
+  color: var(--brand);
+}
+
+.sg-otp__resend {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sg-otp__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sg-otp__back:hover {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/* ── Small screens ────────────────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .sg-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sg-grid--pro {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .sg-col--job {
+    grid-column: auto;
+  }
+
+  .sg-choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── Tablet & desktop ─────────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+  .inner-content.loginbg.sg-page {
+    padding: 48px 24px 72px;
+  }
+
+  .sg-hero {
+    padding: 32px 36px 30px;
+  }
+
+  .sg-hero__title {
+    font-size: 26px;
+  }
+
+  .sg-body {
+    padding: 32px 40px 38px;
+  }
+
+  .sg-section {
+    margin-bottom: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-card,
+  .sg-otp,
+  .sg-otp-overlay,
+  .sg-spinner {
+    animation: none;
+  }
+
+  .sg-choice,
+  .sg-linkbtn,
+  .sg-otp__verify,
+  .sg-pw__toggle {
+    transition: none;
+  }
+}

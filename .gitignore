@@ -1,0 +1,17 @@
+# Environment files (contain secrets)
+.env
+backend/src/.env
+fe_token/.env
+
+# Dependencies
+**/node_modules
+
+# Git worktrees
+.worktrees/
+
+# Runtime user uploads (generated at runtime, not source). Keep branded
+# navbar/logo assets, which are committed intentionally.
+backend/src/public/uploads/gallery/user_*
+
+# Workflow agent scratch/artifacts (not application code)
+.agents/

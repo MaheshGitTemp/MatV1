@@ -1,0 +1,94 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    # ports:
+    #   - "5432:5432"          # expose Postgres to host
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - fullstack-net
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    ports:
+      - "9012:9012"
+    environment:
+    ########################################
+      # DEVELOPMENT SETTINGS
+      ########################################
+      # NODE_ENV: development
+      # PORT: 9012
+      # CLIENT_ORIGIN: http://localhost:3000
+      # TOKEN_SECRET: dileepltts_dev_secret_change_me
+      # REFRESH_TOKEN_SECRET: dileepltts_refresh_secret_change_me
+      # EMAIL_USER: telugusambandham@gmail.com
+      # EMAIL_PASS: your_gmail_app_password
+      # EMAIL_FROM: TeluguSambandham <telugusambandham@gmail.com>
+      # PGHOST: db
+      # PGPORT: 5432
+      # PGUSER: postgres
+      # PGPASSWORD: postgres
+      # PGDATABASE: postgres
+      ########################################
+      # PRODUCTION SETTINGS
+      ########################################
+      # All values come from the root .env (copy .env.example -> .env and fill in).
+      # Set NODE_ENV=production in .env so Secure/SameSite cookies engage, and
+      # CLIENT_ORIGIN to the real HTTPS site origin (CORS must match it exactly).
+      NODE_ENV: ${NODE_ENV}
+      PORT: 9012
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN}
+      TOKEN_SECRET: ${TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      ADMIN_TOKEN_SECRET: ${ADMIN_TOKEN_SECRET}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+      EMAIL_FROM: ${EMAIL_FROM}
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+    volumes:
+      # Persist user-uploaded gallery images across container rebuilds.
+      - uploads:/app/src/public/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - fullstack-net
+
+  frontend:
+    build:
+      context: ./fe_token
+      args:
+        # CRA inlines REACT_APP_* at BUILD time, so the API base URL must be
+        # passed as a build arg (runtime env has no effect on the static bundle).
+        # Set REACT_APP_API_BASE_URL in the root .env, e.g. https://telugusambandham.com/api
+        REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - fullstack-net
+
+networks:
+  fullstack-net:
+    driver: bridge
+
+volumes:
+  pgdata:
+  uploads:
