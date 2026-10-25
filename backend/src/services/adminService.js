@@ -309,6 +309,46 @@ async function createImpersonationToken(uid, adminId) {
   }
 }
 
+// ── Contact-view limit setting ──────────────────────────────────────────────
+// The daily contact-view limit lives in the app_settings key/value table under
+// the key 'daily_contact_view_limit'. Enforcement (dbController) reads it live,
+// so updates here take effect on the next request. Default to 5 when missing.
+const CONTACT_LIMIT_KEY = 'daily_contact_view_limit';
+const CONTACT_LIMIT_DEFAULT = 5;
+
+async function getContactViewLimit() {
+  const client = await pool.connect();
+  try {
+    const { rows } = await client.query(
+      `SELECT value FROM public.app_settings WHERE key = $1`,
+      [CONTACT_LIMIT_KEY]
+    );
+    const parsed = rows[0] ? parseInt(rows[0].value, 10) : NaN;
+    return Number.isFinite(parsed) ? parsed : CONTACT_LIMIT_DEFAULT;
+  } finally {
+    client.release();
+  }
+}
+
+async function setContactViewLimit(value) {
+  const limit = Number(value);
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+    throw new Error('Invalid contact view limit.');
+  }
+  const client = await pool.connect();
+  try {
+    await client.query(
+      `INSERT INTO public.app_settings (key, value, updated_at)
+            VALUES ($1, $2, NOW())
+       ON CONFLICT (key) DO UPDATE SET value = $2, updated_at = NOW()`,
+      [CONTACT_LIMIT_KEY, String(limit)]
+    );
+    return limit;
+  } finally {
+    client.release();
+  }
+}
+
 // ── Audit log ──────────────────────────────────────────────────────────────
 async function writeAudit({ adminId, action, targetUid, details }) {
   const client = await pool.connect();
@@ -385,5 +425,7 @@ module.exports = {
   listFlaggedSenders,
   createImpersonationToken,
   writeAudit,
-  deleteUserCascade
+  deleteUserCascade,
+  getContactViewLimit,
+  setContactViewLimit
 };

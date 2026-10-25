@@ -502,7 +502,8 @@ const ProfileDetails = () => {
                         </ul>
                         <ul className="pd-info__list">
                           <li><span className="pd-info__key">LAST NAME</span><span className="pd-info__val pd-info__val--name">{userDetails.ulname || 'Not Available'}</span></li>
-                          <li><span className="pd-info__key">EMAIL</span><span className="pd-info__val">{userDetails.uemail || 'Not Available'}</span></li>
+                          {/* <li><span className="pd-info__key">EMAIL</span><span className="pd-info__val">{userDetails.uemail || 'Not Available'}</span></li> */}
+                          
                           <li><span className="pd-info__key">HEIGHT</span><span className="pd-info__val">{userDetails.uheight || 'Not Available'} Feet</span></li>
                           <li><span className="pd-info__key">MARITAL STATUS</span><span className="pd-info__val">{userDetails.maritalstatus || 'Not Available'}</span></li>
                           <li><span className="pd-info__key">TIME OF BIRTH</span><span className="pd-info__val">{userDetails.utob || 'Not Available'}</span></li>

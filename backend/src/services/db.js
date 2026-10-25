@@ -911,6 +911,27 @@ const getNumericSetting = async (key, fallback) => {
   }
 };
 
+// UPSERT an app setting into app_settings (e.g. the daily contact-view limit).
+// Enforcement reads the value live via getNumericSetting, so a change here takes
+// effect immediately on the next request.
+const setNumericSetting = async (key, value) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ($1, $2, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $2, updated_at = NOW()`,
+      [key, String(value)]
+    );
+    return true;
+  } catch (error) {
+    console.error('setNumericSetting error:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 // How many DISTINCT profiles has this viewer unlocked today?
 const getTodayContactViewCount = async (viewerId) => {
   const client = await pool.connect();
@@ -1036,6 +1057,7 @@ module.exports.verifyOtp = verifyOtp;
 //end registeration
 module.exports.getUserMobile = getUserMobile;  // add to existing exports
 module.exports.getNumericSetting       = getNumericSetting;
+module.exports.setNumericSetting       = setNumericSetting;
 module.exports.getTodayContactViewCount = getTodayContactViewCount;
 module.exports.hasViewedContactToday    = hasViewedContactToday;
 module.exports.recordContactView        = recordContactView;

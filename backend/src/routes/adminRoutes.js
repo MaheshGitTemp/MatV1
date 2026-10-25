@@ -24,6 +24,8 @@ router.delete('/users/:uid', requireAdmin, adminController.deleteUser);
 router.get('/photos', requireAdmin, adminController.photos);
 router.post('/photos/status', requireAdmin, adminController.setPhotoStatus);
 router.get('/messageslist', requireAdmin, adminController.messageslist);
+router.get('/settings/contact-limit', requireAdmin, adminController.getContactLimit);
+router.post('/settings/contact-limit', requireAdmin, adminController.setContactLimit);
 router.post('/impersonate', requireAdmin, adminController.impersonate);
 
 module.exports = router;

@@ -30,6 +30,7 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import AdminUsers from "./components/admin/AdminUsers";
 import AdminPhotos from "./components/admin/AdminPhotos";
 import AdminMessagesList from "./components/admin/AdminMessagesList";
+import AdminContactLimit from "./components/admin/AdminContactLimit";
 import Impersonate from "./components/admin/Impersonate";
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
             <Route path="users"        element={<AdminUsers />} />
             <Route path="photos"       element={<AdminPhotos />} />
             <Route path="messageslist" element={<AdminMessagesList />} />
+            <Route path="contact-limit" element={<AdminContactLimit />} />
           </Route>
 
           {/* Public impersonation handler — mints user session from a one-time token */}

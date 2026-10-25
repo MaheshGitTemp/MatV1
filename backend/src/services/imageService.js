@@ -68,7 +68,7 @@ const buildWatermarkSvg = (width, height) => {
     `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
        <style>
          .wm { fill: #ffffff; fill-opacity: ${WATERMARK_OPACITY};
-               font-family: Arial, Helvetica, sans-serif; font-weight: 700;
+               font-family: 'DejaVu Sans', 'Noto Sans', Arial, Helvetica, sans-serif; font-weight: 700;
                font-size: ${fontSize}px; paint-order: stroke;
                stroke: #000000; stroke-opacity: ${WATERMARK_OPACITY * 0.5};
                stroke-width: 1px; }

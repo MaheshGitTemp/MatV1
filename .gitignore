@@ -1,6 +1,7 @@
 # Environment files (contain secrets)
 .env
 backend/src/.env
+backend/docker.env
 fe_token/.env
 
 # Dependencies

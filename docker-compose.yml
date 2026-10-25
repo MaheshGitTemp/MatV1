@@ -1,15 +1,21 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:14
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${PGUSER}
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
-    # ports:
-    #   - "5432:5432"          # expose Postgres to host
+    ports:
+      - "5433:5432"          # expose Postgres to host on 5433 (pgAdmin can connect here)
     volumes:
       - pgdata:/var/lib/postgresql/data
+      # Auto-load the dump on FIRST init of an empty pgdata volume. The postgres
+      # image runs files in /docker-entrypoint-initdb.d in ALPHABETICAL order,
+      # so structure (01) loads before data (02). This runs ONCE; to re-seed you
+      # must wipe the volume with `docker compose down -v`.
+      - ./telugusambandhamStructurev2.sql:/docker-entrypoint-initdb.d/01-structure.sql:ro
+      - ./telugusambandhamDatav2.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 5s

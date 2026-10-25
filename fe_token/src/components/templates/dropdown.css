@@ -5,3 +5,35 @@
  
 
 /* Header  logged in profile dropdown */
+
+/* ── Active (current-page) highlight ───────────────────────────────────────
+   Derived from the router's current path in Header.js. Exactly one dropdown
+   item carries `is-active` at a time. Uses the same brand accent as the
+   sidebar's active state so the two stay visually in sync. */
+.hdr-menu__item.is-active > a,
+.hdr-menu__item.is-active > a:hover {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-weight: 700;
+}
+
+.hdr-menu__item.is-active > a i {
+  color: var(--brand);
+}
+
+/* Close My Account turns red only when it is the active page. The
+   `hdr-menu__item--danger` class is applied in the markup solely for the
+   active /closeaccount state, so on every other page the item renders as a
+   normal (non-red) inactive item. */
+.hdr-menu__item--danger.is-active > a,
+.hdr-menu__item--danger.is-active > a:hover,
+.hdr-menu__item--danger.is-active > a i {
+  color: var(--danger);
+  background: #fdf1f0;
+}
+
+/* Edit Profile link inside the profile block reflects the active route too. */
+.hdr-profile__edit.is-active {
+  font-weight: 700;
+  color: var(--brand-700);
+}

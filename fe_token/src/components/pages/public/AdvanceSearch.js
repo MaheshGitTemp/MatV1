@@ -1,89 +1,19 @@
 
 
+
 // src/components/pages/public/AdvanceSearch.js
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Profiles from '../../templates/ImagesLoader';
 import { fetchUserDetails } from '../../../services/userService';
 import '../../../assets/css/pages/advance-search.css';
-import {
-  LISTING_LIMIT,
-  AdvancedSearchForm,
-  ProfileCards,
-  ProfilePager,
-  buildSearchParams,
-  getResultRange,
-  getSearchFiltersFromParams,
-  runProfileSearch,
-  useSalaryFilter,
-  withProfileImages,
-} from './AdvancedSearchForm';
 
 const AdvanceSearch = () => {
   const navigate = useNavigate();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [userDetails, setUserDetails] = useState({});
-  const [userList, setUserList] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalRecords, setTotalRecords] = useState(0);
-
   const [searchId, setSearchId] = useState('');
   const [loading,  setLoading]  = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-
-  // Advanced search (same form, salary logic and search service as Listing)
-  const USERGENDER = localStorage.getItem("userGender") || "";
-  const userId = localStorage.getItem("userId");
-  const salary = useSalaryFilter();
-  const page = Number(searchParams.get('page')) || 1;
-  const oppositeGender = (userId && userDetails.ugender)
-    ? (userDetails.ugender === "Male" ? "Female" : "Male")
-    : null;
-  const searchFilters = getSearchFiltersFromParams(searchParams, USERGENDER);
-  const isSearchActive = Object.keys(searchFilters).length > 0;
-
-  // Logged-in users: load details so the opposite gender is applied (same as Listing)
-  useEffect(() => {
-    if (userId) {
-      fetchUserDetails(userId)
-        .then(res => setUserDetails(res.data))
-        .catch(err => console.error('Error fetching user details:', err));
-    }
-  }, [userId]);
-
-  // Search results (only when a filter is active)
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      try {
-        const { rows, total } = await runProfileSearch(searchFilters, page, LISTING_LIMIT);
-        setTotalRecords(total);
-        setTotalPages(Math.ceil(total / LISTING_LIMIT));
-        setUserList(withProfileImages(rows));
-      } catch (error) {
-        setUserList([]);
-        setTotalPages(0);
-        setTotalRecords(0);
-        console.error('Error fetching search results:', error);
-      }
-    };
-
-    if (isSearchActive) {
-      fetchSearchResults();
-    }
-  }, [searchParams, page, isSearchActive]);
-
-  const handleAdvancedSubmit = (filters) => {
-    setSearchParams(buildSearchParams(filters));
-  };
-
-  const updatePageInUrl = (newPage) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('page', String(newPage));
-    setSearchParams(params);
-  };
-
-  const { start, end } = getResultRange(page, totalRecords, LISTING_LIMIT);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -249,53 +179,6 @@ const AdvanceSearch = () => {
 
             </div>
           </div>
-
-          {/* ── Advanced Search Card (same form as the Listing page) ──── */}
-          <div className="adv-card adv-card--filters">
-            <div className="adv-card__head">
-              <div className="adv-card__icon">
-                <i className="fas fa-sliders-h" aria-hidden="true"></i>
-              </div>
-              <div>
-                <h4 className="adv-card__title">
-                  Search by Profile Details
-                </h4>
-                <p className="adv-card__sub">
-                  Filter profiles by age, education, location, occupation and more
-                </p>
-              </div>
-            </div>
-            <div className="adv-card__body">
-              <AdvancedSearchForm
-                className="lst-filters adv-filters"
-                showGenderField={!userId}
-                oppositeGender={oppositeGender}
-                salary={salary}
-                onSubmit={handleAdvancedSubmit}
-              />
-            </div>
-          </div>
-
-          {/* ── Results (same rendering as the Listing page) ─────────── */}
-          {isSearchActive && (
-            <section className="adv-results" aria-label="Search results">
-              <div className="lst-toolbar">
-                <div className="lst-count">
-                  Displaying Results: {userList.length > 0 ? `${start} - ${end}` : '0'} from {totalRecords} Profiles
-                </div>
-              </div>
-
-              <ProfileCards userList={userList} page={page} />
-
-              {totalRecords >= LISTING_LIMIT && (
-                <ProfilePager
-                  page={page}
-                  totalPages={totalPages}
-                  onPageChange={updatePageInUrl}
-                />
-              )}
-            </section>
-          )}
 
         </div>
       </div>

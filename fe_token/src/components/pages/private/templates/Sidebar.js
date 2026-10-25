@@ -38,6 +38,11 @@ const Sidebar = () => {
   // Gallery page itself (/addgallery).
   const showGallerySection = !isMobile || location.pathname === '/addgallery';
 
+  // Exactly one nav item is active at a time: the one whose target path matches
+  // the current route exactly. Derived from location.pathname on every render,
+  // so navigating clears the old highlight and sets the new one (no useState).
+  const isActivePath = (path) => location.pathname === path;
+
   // Navigate to a tab, then scroll to the page's main content column so the user
   // lands focused on that section instead of at the top (behind the sidebar).
   const goToTab = (e, path) => {
@@ -170,29 +175,32 @@ const Sidebar = () => {
 
         {navOpen && (
         <ul className="sbr__nav">
-          <li><Link className="sbr__link" to="/dashboard" onClick={(e) => goToTab(e, '/dashboard')}><i className="fas fa-tachometer-alt"></i> Dashboard</Link></li>
-          <li><Link className="sbr__link" to="/editprofile" onClick={(e) => goToTab(e, '/editprofile')}><i className="fas fa-edit"></i> Edit Profile</Link></li>
-          <li><Link className="sbr__link" to="/addgallery" onClick={(e) => goToTab(e, '/addgallery')}><i className="fas fa-images"></i> Gallery</Link></li>
+          <li><Link className={`sbr__link${isActivePath('/dashboard') ? ' is-active' : ''}`} to="/dashboard" onClick={(e) => goToTab(e, '/dashboard')}><i className="fas fa-tachometer-alt"></i> Dashboard</Link></li>
+          <li><Link className={`sbr__link${isActivePath('/editprofile') ? ' is-active' : ''}`} to="/editprofile" onClick={(e) => goToTab(e, '/editprofile')}><i className="fas fa-edit"></i> Edit Profile</Link></li>
+          <li><Link className={`sbr__link${isActivePath('/addgallery') ? ' is-active' : ''}`} to="/addgallery" onClick={(e) => goToTab(e, '/addgallery')}><i className="fas fa-images"></i> Gallery</Link></li>
           <li>
-            <Link className="sbr__link" to="/messages" onClick={(e) => goToTab(e, '/messages')}>
+            <Link className={`sbr__link${isActivePath('/messages') ? ' is-active' : ''}`} to="/messages" onClick={(e) => goToTab(e, '/messages')}>
               <i className="far fa-comment"></i> Messages{' '}
               {unreadMessages > 0 && (
                 <span className="sbr__badge">{unreadMessages > 99 ? '99+' : unreadMessages}</span>
               )}
             </Link>
           </li>
-          <li><Link className="sbr__link" to="/changepassword" onClick={(e) => goToTab(e, '/changepassword')}><i className="fas fa-key"></i> Change Password</Link></li>
+          <li><Link className={`sbr__link${isActivePath('/changepassword') ? ' is-active' : ''}`} to="/changepassword" onClick={(e) => goToTab(e, '/changepassword')}><i className="fas fa-key"></i> Change Password</Link></li>
           <li>
-            <Link className="sbr__link" to="/profilesecurity" onClick={(e) => goToTab(e, '/profilesecurity')}>
+            <Link className={`sbr__link${isActivePath('/profilesecurity') ? ' is-active' : ''}`} to="/profilesecurity" onClick={(e) => goToTab(e, '/profilesecurity')}>
               <i className="fas fa-shield-alt"></i> Profile Security
             </Link>
           </li>
           <li>
-            <Link className="sbr__link sbr__link--danger" to="/closeaccount" onClick={(e) => goToTab(e, '/closeaccount')}>
+            {/* Close My Account: the red danger class is applied only when
+                /closeaccount is the current page, so it is neutral elsewhere. */}
+            <Link className={`sbr__link${isActivePath('/closeaccount') ? ' sbr__link--danger is-active' : ''}`} to="/closeaccount" onClick={(e) => goToTab(e, '/closeaccount')}>
               <i className="fas fa-times"></i> Close My Account
             </Link>
           </li>
           <li>
+            {/* Logout is an action, never active. */}
             <a className="sbr__link sbr__link--logout" href="#" onClick={logoutHandler}>
               <i className="fas fa-sign-out-alt"></i> Logout
             </a>

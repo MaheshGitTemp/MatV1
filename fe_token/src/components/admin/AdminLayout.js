@@ -50,6 +50,10 @@ const AdminLayout = () => {
             <i className="fa-solid fa-envelope" aria-hidden="true" />
             <span>Messages List</span>
           </NavLink>
+          <NavLink to="/adminhub/matrimony/contact-limit" className={navLinkClass}>
+            <i className="fa-solid fa-sliders" aria-hidden="true" />
+            <span>Contact Limit</span>
+          </NavLink>
         </nav>
       </aside>
 

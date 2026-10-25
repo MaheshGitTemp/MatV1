@@ -4,7 +4,7 @@ import '../../assets/css/bootstrap.min.css';
 // Removed duplicate imports: bootstrap.css (same framework as bootstrap.min.css)
 // and a local all.min.css (FontAwesome is already loaded globally in index.js).
 import profiles from "../templates/ImagesLoader";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from '../hooks/AuthContext';
 import "./dropdown.css";
 import { imageUrl, approvedProfileImage } from '../../utils/imageUrl';
@@ -29,6 +29,12 @@ const Header = () => {
   // ─── Dropdowns ────────────────────────────────────────────────────────────
   const [isDropdownVisible,     setIsDropdownVisible]     = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+
+  // ─── Active route ─────────────────────────────────────────────────────────
+  // Derived from the current location on every render, so exactly one dropdown
+  // item is highlighted at a time and the previous highlight clears on navigate.
+  const location    = useLocation();
+  const currentPath = location.pathname;
 
   // ─── Auth ─────────────────────────────────────────────────────────────────
   const navigate    = useNavigate();
@@ -519,32 +525,35 @@ const Header = () => {
                           <img src={profilePic} alt="Profile" />
                           <div>
                             <span className="hdr-profile__name">{userDetails.ufname || 'User'}  MAT{userDetails.uid || '---'}</span>
-                            <Link to="/editprofile" className="hdr-profile__edit">
+                            <Link to="/editprofile" className={`hdr-profile__edit${currentPath === '/editprofile' ? ' is-active' : ''}`}>
                               <i className="fas fa-user-edit"></i> Edit Profile
                             </Link>
                           </div>
                         </li>
-                        <li className="hdr-menu__item">
+                        <li className={`hdr-menu__item${currentPath === '/dashboard' ? ' is-active' : ''}`}>
                           <Link to="/dashboard">
                             <i className="fas fa-tachometer-alt"></i> Dashboard
                           </Link>
                         </li>
-                        <li className="hdr-menu__item">
+                        <li className={`hdr-menu__item${currentPath === '/addgallery' ? ' is-active' : ''}`}>
                           <Link to="/addgallery">
                             <i className="fas fa-images"></i> Gallery
                           </Link>
                         </li>
-                        <li className="hdr-menu__item">
+                        <li className={`hdr-menu__item${currentPath === '/changepassword' ? ' is-active' : ''}`}>
                           <Link to="/changepassword">
                             <i className="fas fa-key"></i> Change Password
                           </Link>
                         </li>
-                        <li className="hdr-menu__item hdr-menu__item--danger">
+                        {/* Close My Account: red danger styling applies only when
+                            /closeaccount is the current page, not on every page. */}
+                        <li className={`hdr-menu__item${currentPath === '/closeaccount' ? ' hdr-menu__item--danger is-active' : ''}`}>
                           <Link to="/closeaccount">
                             <i className="fas fa-times"></i> Close My Account
                           </Link>
                         </li>
-                        <li className="hdr-menu__item hdr-menu__item--danger">
+                        {/* Logout is an action, never active. */}
+                        <li className="hdr-menu__item">
                           <a href="#" onClick={logoutHandler}>
                             <i className="fas fa-sign-out-alt"></i> Logout
                           </a>

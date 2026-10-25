@@ -272,6 +272,35 @@ exports.messageslist = async (req, res) => {
   }
 };
 
+// ── Contact-view limit setting ──────────────────────────────────────────────
+exports.getContactLimit = async (req, res) => {
+  try {
+    const limit = await adminService.getContactViewLimit();
+    return res.status(200).json({ status: 'Success', data: { daily_contact_view_limit: limit } });
+  } catch (err) {
+    console.error('adminController.getContactLimit error:', err.message);
+    return res.status(500).json({ status: 'Failure', result: 'Server error.' });
+  }
+};
+
+exports.setContactLimit = async (req, res) => {
+  try {
+    const raw = req.body?.limit ?? req.body?.daily_contact_view_limit;
+    const limit = Number(raw);
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      return res.status(200).json({ status: 'Failure', result: 'Limit must be an integer between 1 and 100.' });
+    }
+    const saved = await adminService.setContactViewLimit(limit);
+    await adminService.writeAudit({
+      adminId: req.admin?.adminId, action: 'set_contact_limit', targetUid: null, details: { limit: saved }
+    });
+    return res.status(200).json({ status: 'Success', data: { daily_contact_view_limit: saved } });
+  } catch (err) {
+    console.error('adminController.setContactLimit error:', err.message);
+    return res.status(500).json({ status: 'Failure', result: 'Server error.' });
+  }
+};
+
 // ── Impersonation ─────────────────────────────────────────────────────────────
 exports.impersonate = async (req, res) => {
   try {

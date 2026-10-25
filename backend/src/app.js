@@ -38,6 +38,6 @@ app.use('/api/adminhub', require('./routes/adminRoutes'));
 app.use('/api', routes);
 
 const port = process.env.PORT || 9012;
-app.listen(port, () => {
+app.listen(port,"0.0.0.0" ,() => {
   console.log(`✅ Server running on port ${port}`);
 });
