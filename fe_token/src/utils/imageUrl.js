@@ -1,9 +1,9 @@
 
 // src/utils/imageUrl.js
-const BASE = process.env.REACT_APP_API_BASE_URL?.replace('/api', '')
-             || 'http://localhost:9012';
-// const BASE = process.env.REACT_APP_API_BASE_URL?.replace('/api', '')
-//              || 'https://telugusambandham.com';
+//const BASE = process.env.REACT_APP_API_BASE_URL?.replace('/api', '')
+  //           || 'http://localhost:9012';
+ const BASE = process.env.REACT_APP_API_BASE_URL?.replace('/api', '')
+              || 'https://telugusambandham.com';
 
 export const imageUrl = (path) => {
   if (!path) return null;
